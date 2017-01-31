@@ -8,6 +8,8 @@ use System\Classes\PluginBase;
  */
 class Plugin extends PluginBase
 {
+    public $require = ['RainLab.Blog','VojtaSvoboda.TwigExtensions'];
+
     /**
      * Returns information about this plugin.
      *
@@ -21,16 +23,6 @@ class Plugin extends PluginBase
             'author'      => 'PolloZen',
             'icon'        => 'icon-arrows-h'
         ];
-    }
-
-    /**
-     * Register method, called when the plugin is first registered.
-     *
-     * @return void
-     */
-    public function register()
-    {
-
     }
 
     /**

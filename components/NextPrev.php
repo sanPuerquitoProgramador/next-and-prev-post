@@ -3,6 +3,7 @@
 use Cms\Classes\Page;
 use Cms\Classes\ComponentBase;
 use RainLab\Blog\Models\Post;
+use RainLab\Blog\Models\Category;
 
 class NextPrev extends ComponentBase
 {
@@ -50,7 +51,7 @@ class NextPrev extends ComponentBase
      * @return [array list] [Blog Categories]
      */
     public function getCategoryOptions(){
-        $categories =  Category::orderBy('name')->lists('name','id');
+        $categories =  array('current' => 'Current post category','noFilter' => 'No category filter') + Category::orderBy('name')->lists('name','id');
         return $categories;
     }
 
@@ -67,13 +68,17 @@ class NextPrev extends ComponentBase
         $this->prepareVars();
 
         /*Get the category filter*/
-        $category = $this->property('category') ? $this->property('category') : null;
+        $category = null;
+        if($this->property('category')=='current'){
+            $category = $this->page[ 'post' ]->categories[0]->id;
+        } elseif($this->property('category')=='noFilter'){
+            $category = null;
+        } else {
+            $category = $this->property('category');
+        }
 
         /* Get post page */
         $this->postPage = $this->property('postPage') ? $this->property('postPage') : '404';
-
-        /*Get the category filter*/
-        $category = $this->property('category') ? $this->property('category') : null;
 
 
         if($this->page[ 'post' ]){
