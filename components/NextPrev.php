@@ -12,7 +12,7 @@ class NextPrev extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'NextPrev Component',
+            'name'        => 'Next and Prev Post',
             'description' => 'Retrieve the next and prev post from the current post'
         ];
     }
@@ -24,6 +24,7 @@ class NextPrev extends ComponentBase
                 'title'         => 'Category',
                 'description'   => 'Filter result by category. If no category selectec, the results will be the inmediate next and previous post',
                 'type'          => 'dropdown',
+                'default'       => 'current',
                 'placeholder'   => 'Select a category',
                 'showExternalParam' => false
             ],
