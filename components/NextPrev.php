@@ -109,8 +109,12 @@ class NextPrev extends ComponentBase
             $nextPost = $n->first();
 
             /* Agregamos el helper de la URL */
-            $prevPost->setUrl($this->postPage,$this->controller);
-            $nextPost->setUrl($this->postPage,$this->controller);
+            if(count($prevPost)!=0){
+                $prevPost->setUrl($this->postPage,$this->controller);
+            }
+            if(count($nextPost)!=0){
+                $nextPost->setUrl($this->postPage,$this->controller);
+            }
 
         }
         $this->next = $nextPost;

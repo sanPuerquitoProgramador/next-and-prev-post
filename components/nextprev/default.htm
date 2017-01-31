@@ -1,6 +1,7 @@
 {% set prev = __SELF__.prev %}
 {% set next = __SELF__.next %}
 <div id="next-prev">
+{% if prev %}
     <div class="prev-post col-sm-6">
         <span class="small-title"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous</span>
         <h4><a href="{{prev.url}}" title="{{ prev.title }}">{{ prev.title }}</a></h4>
@@ -14,7 +15,8 @@
             <meta itemprop="datePublished" content="{{ prev.published_at|date('Y-m-dTH:i:sZ') }}"/>
         </span>
     </div>
-
+{% endif %}
+{% if next %}
     <div class="next-post col-sm-6 text-right">
         <span class="small-title">Next <i class="fa fa-arrow-right" aria-hidden="true"></i></span>
         <h4><a href="{{next.url}}" title="{{ next.title }}">{{ next.title }}</a></h4>
@@ -27,4 +29,5 @@
             <meta itemprop="datePublished" content="{{ next.published_at|date('Y-m-dTH:i:sZ') }}"/>
         </span>
     </div>
+{% endif %}
 </div>
