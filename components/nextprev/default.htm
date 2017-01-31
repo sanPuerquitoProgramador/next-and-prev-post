@@ -1,0 +1,30 @@
+{% set prev = __SELF__.prev %}
+{% set next = __SELF__.next %}
+<div id="next-prev">
+    <div class="prev-post col-sm-6">
+        <span class="small-title"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous</span>
+        <h4><a href="{{prev.url}}" title="{{ prev.title }}">{{ prev.title }}</a></h4>
+        <span class="small">
+            {% if date(prev.published_at) > date('-7days') %}
+                {{ prev.published_at | time_diff }}
+            {% else %}
+                <time datetime="{{ prev.published_at|date('Y-m-d\TH:i:sP') }}"> <i class="fa fa-ellipsis-h" aria-hidden="true"></i> {{ prev.published_at | strftime('%A') }}, {{ prev.published_at | strftime('%e %B %Y') }}</time>
+            {% endif %}
+
+            <meta itemprop="datePublished" content="{{ prev.published_at|date('Y-m-dTH:i:sZ') }}"/>
+        </span>
+    </div>
+
+    <div class="next-post col-sm-6 text-right">
+        <span class="small-title">Next <i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+        <h4><a href="{{next.url}}" title="{{ next.title }}">{{ next.title }}</a></h4>
+        <span class="small">
+            {% if date(next.published_at) > date('-7days') %}
+                {{ next.published_at | time_diff }}
+            {% else %}
+                <time datetime="{{ next.published_at|date('Y-m-d\TH:i:sP') }}"> <i class="fa fa-ellipsis-h" aria-hidden="true"></i> {{ next.published_at | strftime('%A') }}, {{ next.published_at | strftime('%e %B %Y') }}</time>
+            {% endif %}
+            <meta itemprop="datePublished" content="{{ next.published_at|date('Y-m-dTH:i:sZ') }}"/>
+        </span>
+    </div>
+</div>
