@@ -71,58 +71,6 @@ class NextPrev extends ComponentBase
         $this->prepareVars();
         $this->nextPost = $this->page['nextPost'] = $this->getNP('Next');
         $this->prevPost = $this->page['prevPost'] = $this->getNP('Prev');
-
-
-        // /*Get the category filter*/
-        // $category = null;
-        // if($this->property('category')=='current'){
-        //     $category = $this->page[ 'post' ]->categories[0]->id;
-        // } elseif($this->property('category')=='noFilter'){
-        //     $category = null;
-        // } else {
-        //     $category = $this->property('category');
-        // }
-
-
-
-        // if($this->page[ 'post' ]){
-        //     if($this->page[ 'post' ]->id){
-        //         $currentPostId = $this->page['post']->id;
-        //     }
-
-        //     $p =  Post::isPublished();
-        //     $p  ->where('id','<',$currentPostId)
-        //         ->orderBy('id','desc');
-        //     if ($category !== null) {
-        //         if (!is_array($category)) $category = [$category];
-        //         $p->whereHas('categories', function($q) use ($category) {
-        //             $q->whereIn('id', $category);
-        //         });
-        //     }
-        //     $prevPost = $p->first();
-
-        //     $n =  Post::isPublished();
-        //     $n  ->where('id','>',$currentPostId)
-        //         ->orderBy('id','asc');
-        //     if ($category !== null) {
-        //         if (!is_array($category)) $category = [$category];
-        //         $n->whereHas('categories', function($q) use ($category) {
-        //             $q->whereIn('id', $category);
-        //         });
-        //     }
-        //     $nextPost = $n->first();
-
-        //     /* Agregamos el helper de la URL */
-        //     if(count($prevPost)!=0){
-        //         $prevPost->setUrl($this->postPage,$this->controller);
-        //     }
-        //     if(count($nextPost)!=0){
-        //         $nextPost->setUrl($this->postPage,$this->controller);
-        //     }
-
-        // }
-        // $this->next = $nextPost;
-        // $this->prev = $prevPost;
     }
 
     public function getNP($pp){
