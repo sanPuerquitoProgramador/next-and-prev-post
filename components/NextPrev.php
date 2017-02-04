@@ -7,8 +7,8 @@ use RainLab\Blog\Models\Category;
 
 class NextPrev extends ComponentBase
 {
-    public $next;
-    public $prev;
+    public $nextPost;
+    public $prevPost;
     public function componentDetails()
     {
         return [
@@ -22,7 +22,7 @@ class NextPrev extends ComponentBase
         return [
             'category' =>[
                 'title'         => 'Category',
-                'description'   => 'Filter result by category. If no category selectec, the results will be the inmediate next and previous post',
+                'description'   => 'Filter posts by category. If no category selectec, the results will be the inmediate next and previous post',
                 'type'          => 'dropdown',
                 'default'       => 'current',
                 'placeholder'   => 'Select a category',
@@ -63,12 +63,115 @@ class NextPrev extends ComponentBase
     protected function prepareVars()
     {
         $this->postParam = $this->page['postParam'] = $this->property('postParam');
+        /* Get post page */
+        $this->postPage = $this->property('postPage') ? $this->property('postPage') : '404';
     }
 
     public function onRun(){
         $this->prepareVars();
+        $this->nextPost = $this->page['nextPost'] = $this->getNP('Next');
+        $this->prevPost = $this->page['prevPost'] = $this->getNP('Prev');
 
-        /*Get the category filter*/
+
+        // /*Get the category filter*/
+        // $category = null;
+        // if($this->property('category')=='current'){
+        //     $category = $this->page[ 'post' ]->categories[0]->id;
+        // } elseif($this->property('category')=='noFilter'){
+        //     $category = null;
+        // } else {
+        //     $category = $this->property('category');
+        // }
+
+
+
+        // if($this->page[ 'post' ]){
+        //     if($this->page[ 'post' ]->id){
+        //         $currentPostId = $this->page['post']->id;
+        //     }
+
+        //     $p =  Post::isPublished();
+        //     $p  ->where('id','<',$currentPostId)
+        //         ->orderBy('id','desc');
+        //     if ($category !== null) {
+        //         if (!is_array($category)) $category = [$category];
+        //         $p->whereHas('categories', function($q) use ($category) {
+        //             $q->whereIn('id', $category);
+        //         });
+        //     }
+        //     $prevPost = $p->first();
+
+        //     $n =  Post::isPublished();
+        //     $n  ->where('id','>',$currentPostId)
+        //         ->orderBy('id','asc');
+        //     if ($category !== null) {
+        //         if (!is_array($category)) $category = [$category];
+        //         $n->whereHas('categories', function($q) use ($category) {
+        //             $q->whereIn('id', $category);
+        //         });
+        //     }
+        //     $nextPost = $n->first();
+
+        //     /* Agregamos el helper de la URL */
+        //     if(count($prevPost)!=0){
+        //         $prevPost->setUrl($this->postPage,$this->controller);
+        //     }
+        //     if(count($nextPost)!=0){
+        //         $nextPost->setUrl($this->postPage,$this->controller);
+        //     }
+
+        // }
+        // $this->next = $nextPost;
+        // $this->prev = $prevPost;
+    }
+
+    public function getNP($pp){
+        $params = ($pp=='Next') ? array(0 =>'>',1 => 'asc') : array(0 => '<', 1 => 'desc');
+        $currentPostId =  $this->getPostId();
+        $category = $this->getCategory();
+
+       if($currentPostId != 0){
+            $post =  Post::isPublished();
+                $post   ->where('id',$params[0],$currentPostId)
+                        ->orderBy('id',$params[1]);
+                if ($category !== null) {
+                    if (!is_array($category)) $category = [$category];
+                    $post->whereHas('categories', function($q) use ($category) {
+                        $q->whereIn('id', $category);
+                    });
+                }
+            $np = $post->first();
+
+            /* Agregamos el helper de la URL */
+            if(count($np)!=0){
+                $np->setUrl($this->postPage,$this->controller);
+            }
+
+            return $np;
+       }
+    }
+
+    /**
+     * getPostID function
+     * @return [function] return the current post id
+     */
+    protected function getPostId(){
+        if($this->page[ 'post' ]){
+            if($this->page[ 'post' ]->id){
+                return $this->page['post']->id;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * getCategory
+     * @return protected function returns the current category or the category filter selected by the user or null
+     */
+    protected function getCategory(){
         $category = null;
         if($this->property('category')=='current'){
             $category = $this->page[ 'post' ]->categories[0]->id;
@@ -77,48 +180,6 @@ class NextPrev extends ComponentBase
         } else {
             $category = $this->property('category');
         }
-
-        /* Get post page */
-        $this->postPage = $this->property('postPage') ? $this->property('postPage') : '404';
-
-
-        if($this->page[ 'post' ]){
-            if($this->page[ 'post' ]->id){
-                $currentPostId = $this->page['post']->id;
-            }
-
-            $p =  Post::isPublished();
-            $p  ->where('id','<',$currentPostId)
-                ->orderBy('id','desc');
-            if ($category !== null) {
-                if (!is_array($category)) $category = [$category];
-                $p->whereHas('categories', function($q) use ($category) {
-                    $q->whereIn('id', $category);
-                });
-            }
-            $prevPost = $p->first();
-
-            $n =  Post::isPublished();
-            $n  ->where('id','>',$currentPostId)
-                ->orderBy('id','asc');
-            if ($category !== null) {
-                if (!is_array($category)) $category = [$category];
-                $n->whereHas('categories', function($q) use ($category) {
-                    $q->whereIn('id', $category);
-                });
-            }
-            $nextPost = $n->first();
-
-            /* Agregamos el helper de la URL */
-            if(count($prevPost)!=0){
-                $prevPost->setUrl($this->postPage,$this->controller);
-            }
-            if(count($nextPost)!=0){
-                $nextPost->setUrl($this->postPage,$this->controller);
-            }
-
-        }
-        $this->next = $nextPost;
-        $this->prev = $prevPost;
+        return $category;
     }
 }

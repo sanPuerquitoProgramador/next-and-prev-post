@@ -47,23 +47,4 @@ class Plugin extends PluginBase
         ];
     }
 
-    /**
-     * Registers any back-end permissions used by this plugin.
-     *
-     * @return array
-     */
-    public function registerPermissions()
-    {
-        return []; // Remove this line to activate
-    }
-
-    /**
-     * Registers back-end navigation items for this plugin.
-     *
-     * @return array
-     */
-    public function registerNavigation()
-    {
-        return []; // Remove this line to activate
-    }
 }
