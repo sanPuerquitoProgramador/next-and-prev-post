@@ -91,7 +91,7 @@ class NextPrev extends ComponentBase
             $np = $post->first();
 
             /* Agregamos el helper de la URL */
-            if(count($np)!=0){
+            if(isset($np->attributes)){
                 $np->setUrl($this->postPage,$this->controller);
             }
 
